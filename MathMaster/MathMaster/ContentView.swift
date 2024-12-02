@@ -6,23 +6,35 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var context
+    
+    
     var body: some View {
         TabView {
-            Tab("Eins", systemImage: "cat") {
+            Tab("Setup", systemImage: "gear") {
+                
                 SetupView()
             }
-            Tab("Zwei", systemImage: "dog") {
+            Tab("Game", systemImage: "gamecontroller") {
                 GameView()
             }
-            Tab("Drei", systemImage: "bird") {
+            Tab("Stats", systemImage: "list.clipboard.fill") {
                 StatsView()
             }
+            Tab("ShowUsers", systemImage: "person.crop.circle.badge.plus") {
+                ShowUser()
+            }
         }
-    }
+    }    
 }
 
+
 #Preview {
-    ContentView()
+    let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: User.self, configurations: configuration)
+    return ContentView()
+        .modelContainer(container)
 }
