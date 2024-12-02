@@ -11,13 +11,13 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Tab("Eins", systemImage: "cat") {
-                Setup()
+                SetupView()
             }
             Tab("Zwei", systemImage: "dog") {
-                Game()
+                GameView()
             }
             Tab("Drei", systemImage: "bird") {
-                Stats()
+                StatsView()
             }
         }
     }

@@ -1,5 +1,5 @@
 //
-//  Stats.swift
+//  Setup.swift
 //  MathMaster
 //
 //  Created by Christoph Schwalm on 02.12.24.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct Stats: View {
+struct SetupView: View {
     var body: some View {
-        Text("Hello, Stats")
+        Text("Hello, Setup!")
     }
 }
