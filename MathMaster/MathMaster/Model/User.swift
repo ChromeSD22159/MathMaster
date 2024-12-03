@@ -14,10 +14,12 @@ class User: Identifiable {
     var name: String
     var age: Int
     
-    @Relationship(inverse: \Game.user) var games: [Game] = []
+    @Relationship(inverse: \Statistic.user)
+    var games: [Statistic]
     
-    init(name: String, age: Int) {
+    init(name: String, age: Int, games: [Statistic] = []) {
         self.name = name
         self.age = age
+        self.games = games
     }
 }

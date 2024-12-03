@@ -9,9 +9,23 @@ import SwiftUI
 
 struct SetupView: View {
 
+    @AppStorage("selectedPicker") private var selectedPicker = Schwierigkeitsgrad.easy
     
     var body: some View {
-        Text("Hello, Setup!")
+        
+            Picker("Schwierigkeitsgrad", selection: $selectedPicker) {
+                ForEach(Schwierigkeitsgrad.allCases) { gameType in
+                    Text(gameType.rawValue).tag(gameType)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding()
+        
         
     }
+}
+
+
+#Preview {
+    SetupView()
 }

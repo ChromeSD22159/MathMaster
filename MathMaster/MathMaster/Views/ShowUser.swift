@@ -13,10 +13,18 @@ struct ShowUser: View {
     @Query var user: [User]
     
     var body: some View {
-        List{
-            ForEach(user) { user in
-                Text("\(user.name)")
+        NavigationStack {
+            List {
+                ForEach(user) { user in
+                        HStack {
+                            Text("\(user.name)")
+                            Spacer()
+                            Text("\(user.age) Jahre alt")
+                        }
+                    
+                }
             }
+            .navigationTitle("User")
         }
     }
 }

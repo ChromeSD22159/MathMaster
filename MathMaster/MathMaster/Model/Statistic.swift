@@ -1,5 +1,5 @@
 //
-//  Game.swift
+//  Statistic.swift
 //  MathMaster
 //
 //  Created by Christoph Schwalm on 02.12.24.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Game : Identifiable {
+class Statistic : Identifiable {
     var id: UUID
     var name: String
     var gameType: String
