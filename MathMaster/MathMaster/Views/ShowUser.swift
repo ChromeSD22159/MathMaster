@@ -10,7 +10,10 @@ import SwiftData
 
 struct ShowUser: View {
     @Environment(\.modelContext) var context
-    @Query var user: [User]
+    
+    @Query(sort: \User.age, order: .reverse) var user: [User]
+    
+    @State private var showSheetOnbording = false
     
     var body: some View {
         NavigationStack {
@@ -25,6 +28,17 @@ struct ShowUser: View {
                 }
             }
             .navigationTitle("User")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("", systemImage: "plus") {
+                        showSheetOnbording = true
+                    }
+                    .sheet(isPresented: $showSheetOnbording) {
+                        OnboardingView()
+                    }
+                }
+            }
+            
         }
     }
 }

@@ -10,6 +10,7 @@ import SwiftData
 
 struct OnboardingView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) var dismiss
     
     @State private var username: String = ""
     @State private var age: String = ""
@@ -27,6 +28,7 @@ struct OnboardingView: View {
             Button {
                 if let ageInt = Int(age) {
                     context.insert(User(name: username, age: ageInt))
+                    dismiss()
                 } else {
                     print("Bitte gültiger Alter eingeben!")
                 }

@@ -14,9 +14,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            Tab("Setup", systemImage: "gear") {
-                SetupView()
-            }
+            
             Tab("Game", systemImage: "gamecontroller") {
                 GameView()
             }
@@ -26,8 +24,8 @@ struct ContentView: View {
             Tab("ShowUsers", systemImage: "person.crop.circle.badge.plus") {
                 ShowUser()
             }
-            Tab("Onboarding", systemImage: "bird") {
-                OnboardingView()
+            Tab("Setup", systemImage: "gear") {
+                SetupView()
             }
         }
     }    
