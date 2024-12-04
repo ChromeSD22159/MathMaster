@@ -11,20 +11,24 @@ struct GameView: View {
     @Environment(\.modelContext) var modelContext
       
     var user: User?
-    
-    @State var math: Math?
-    
+     
+    /// GameLength from Settings
     @AppStorage("gameDuration") private var gameDuration = 60
     
+    /// TImer States
     @State var remeiningTime: Int = 0
     @State var timerJob: Timer?
     
+    /// Game States
+    @State var math: Math?
     @State var rightAnswer: Int = 0
     @State var wrongAnswer: Int = 0
     @State var points = 0
     
+    /// Alert States
     @State var showingResultAlert = false
     
+    /// Switch RemainingTime Color By Left Time
     var timerColor: Color {
         remeiningTime < 10 ? .red : timerJob == nil ? .gray : .green
     }
@@ -63,12 +67,17 @@ struct GameView: View {
                 HStack {
                     Spacer()
                     if let math = math {
-                        Text("\(math.displayText) = ?")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
+                        Text("\(math.displayText) =")
+                        
+                        Text("?")
+                            .padding(10)
+                            .background(.gray.opacity(0.25))
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
                     }
                     Spacer()
                 }
+                .font(.largeTitle)
+                .fontWeight(.bold)
             }
             .cardStyle()
             
@@ -90,8 +99,8 @@ struct GameView: View {
                     action: restartGame
                 ),
                 secondaryButton: .destructive(
-                    Text("Home"),
-                    action: navigateHome
+                      Text("Home"),
+                      action: navigateHome
                 )
             )
         }
@@ -141,9 +150,9 @@ struct GameView: View {
             
             modelContext.insert(gameResult)
             
-            // TODO: FIND #Ranking in POINT DB
-            
             showingResultAlert = true
+             
+            // TODO: FIND #Ranking in POINT DB
         }
     }
     
@@ -157,8 +166,12 @@ struct GameView: View {
     }
     
     private func navigateHome() {
-        showingResultAlert = false
-        
-        // TODO: NAVIGATE TO HOME
+        pauseTimer()
+        showingResultAlert = false // Alert schließen
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            // Logik zur Navigation implementieren
+            // Beispiel:
+            // presentationMode.wrappedValue.dismiss()
+        }
     }
-} 
+}

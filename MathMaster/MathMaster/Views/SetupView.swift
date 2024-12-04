@@ -13,11 +13,13 @@ struct SetupView: View {
     
     @AppStorage("Schwierigkeitsgrad") private var selectedPicker = Schwierigkeitsgrad.easy
     @AppStorage("gameDuration") private var gameDuration = 60
-//    @State private var showSheet = false
+    // @State private var showSheet = false
     @AppStorage("additionToggle") private var additionToggle = false
     @AppStorage("subtractionToggle") private var subtractionToggle = false
     @AppStorage("multiplicationToggle") private var multiplicationToggle = false
     @AppStorage("divisionToggle") private var divisionToggle = false
+    
+    @State var currentTheme: Theme = .orange
     
     var body: some View {
         
@@ -53,6 +55,44 @@ struct SetupView: View {
 //                        }
                     }
                     
+                    Section {
+                        HStack(spacing: 10) {
+                            Spacer()
+                            
+                            ForEach(Theme.allCases, id: \.rawValue) { theme in
+                                let size: CGFloat = 150
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(theme.bgGradient)
+                                    .opacity(currentTheme == theme ? 1 : 0.5)
+                                    .overlay {
+                                        if currentTheme == theme {
+                                            withAnimation {
+                                                RoundedRectangle(cornerRadius: 20)
+                                                    .stroke(.white.opacity(0.75), lineWidth: 5)
+                                            }
+                                        }
+                                    }
+                                    .frame(width: size, height: size)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            currentTheme = theme
+                                        }
+                                    }
+                            }
+                            
+                            Spacer()
+                        }
+                        Picker("Theme", selection: $currentTheme) {
+                            ForEach(Theme.allCases, id: \.rawValue) { theme in
+                                Text(theme.rawValue).tag(theme)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .onChange(of: currentTheme, {
+                            ThemeService.setTheme(currentTheme)
+                        })
+                    }
+                    
                     Section("Grundrechenarten") {
                         Toggle("Addition", systemImage: "plus", isOn: $additionToggle)
                         Toggle("Subtraktion", systemImage: "minus", isOn: $subtractionToggle)
@@ -61,6 +101,9 @@ struct SetupView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            currentTheme = ThemeService.currentTheme
         }
     }
 }

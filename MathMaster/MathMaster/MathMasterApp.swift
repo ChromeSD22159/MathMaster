@@ -14,6 +14,7 @@ struct MathMasterApp: App {
         WindowGroup {
             ContentView()
                 .modelContainer(modelContainer)
+                .environment(\.currentTheme, .orange)
         }
     }
 }

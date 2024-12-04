@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NumberPadView: View {
+    @Environment(\.currentTheme) var theme
     
     @State var number: [Int] = []
     
@@ -79,7 +80,7 @@ struct NumberPadView: View {
                         }
                         
                         GridRow {
-                            NumberPadItem("<", color: .yellow, size: buttonWidth){ number in
+                            NumberPadItem("<", color: theme.calculatorSymbolBackgroundColor, size: buttonWidth){ number in
                                 resetNumberArray()
                             }
                             
@@ -89,7 +90,7 @@ struct NumberPadView: View {
                                 }
                             }
                             
-                            NumberPadItem("=", color: .yellow, size: buttonWidth) { number in
+                            NumberPadItem("=", color: theme.calculatorSymbolBackgroundColor, size: buttonWidth) { number in
                                 if let resultCalulated = resultCalulated {
                                     result(resultCalulated)
                                     resetNumberArray()
@@ -98,7 +99,7 @@ struct NumberPadView: View {
                         }
                     }.frame(maxWidth: .infinity, alignment: .center)
                 }
-                .cardStyle() 
+                .cardStyle()
                 
                 Spacer()
             }
@@ -111,13 +112,14 @@ struct NumberPadView: View {
 }
 
 struct NumberPadItem: View {
+    @Environment(\.currentTheme) var theme
     
     let text: String
     let color: Color
     let size: CGFloat
     let result: (Int?) -> Void
     
-    init(_ text: String, color: Color = .blue, size: CGFloat = 80, result: @escaping (Int?) -> Void) {
+    init(_ text: String, color: Color = ThemeService.currentTheme.calculatorNumberBackgroundColor, size: CGFloat = 80, result: @escaping (Int?) -> Void) {
         self.text = text
         self.color = color
         self.size = size
@@ -139,4 +141,5 @@ struct NumberPadItem: View {
     NumberPadView(result: {_ in
         
     })
-}
+    .environment(\.currentTheme, .orange)
+} 
