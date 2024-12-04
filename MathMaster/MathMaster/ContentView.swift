@@ -19,7 +19,9 @@ struct ContentView: View {
     var body: some View {
         TabView {
             Tab("Game", systemImage: "gamecontroller") {
-                GameView(user: user)
+                NavigationStack {
+                    HomeView(user: user) 
+                }
             }
             Tab("Stats", systemImage: "list.clipboard.fill") {
                 StatsView()
@@ -32,24 +34,26 @@ struct ContentView: View {
             }
         }
         .onAppear {
-            if users.count == 0 {
-                let user = User(name: "TestUser", age: 24)
-                modelContext.insert(user)
-                userID = user.userID
-                self.user = user
-            } else {
-                let user = users.first!
-                userID = user.userID
-                self.user = user
-            }
+            insertOrSetUser()
+        }
+    }
+    
+    private func insertOrSetUser() {
+        if users.count == 0 {
+            let user = User(name: "TestUser", age: 24)
+            modelContext.insert(user)
+            userID = user.userID
+            self.user = user
+        } else {
+            let user = users.first!
+            userID = user.userID
+            self.user = user
         }
     }
 }
 
 
 #Preview {
-    let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: User.self, configurations: configuration)
-    return ContentView()
-        .modelContainer(container)
+    ContentView()
+        .modelContainer(previewContainer)
 }

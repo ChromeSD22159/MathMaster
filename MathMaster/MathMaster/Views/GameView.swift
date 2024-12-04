@@ -9,7 +9,8 @@ import SwiftData
 
 struct GameView: View {
     @Environment(\.modelContext) var modelContext
-      
+    @Environment(\.dismiss) var dismiss
+    
     var user: User?
      
     /// GameLength from Settings
@@ -25,6 +26,8 @@ struct GameView: View {
     @State var wrongAnswer: Int = 0
     @State var points = 0
     
+    @State var answer: Int? = nil
+    
     /// Alert States
     @State var showingResultAlert = false
     
@@ -34,58 +37,64 @@ struct GameView: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                Label("\(remeiningTime)", systemImage: "timer")
-                    .foregroundStyle(timerColor)
-                    .onTapGesture {
-                        if timerJob == nil {
-                            restartTimer()
-                        } else {
-                            pauseTimer()
-                        }
-                    }
-                
-                Spacer()
-                
-                HStack {
-                    Label("\(rightAnswer)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
-                    Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
-                }
-            }
-            .cardStyle()
-            
+        ScrollView(.vertical, showsIndicators: false) {
             VStack {
                 HStack {
-                    Text("Frage:")
-                        .font(.headline)
-                        .fontWeight(.semibold)
+                    Label("\(remeiningTime)", systemImage: "timer")
+                        .foregroundStyle(timerColor)
+                        .onTapGesture {
+                            if timerJob == nil {
+                                restartTimer()
+                            } else {
+                                pauseTimer()
+                            }
+                        }
                     
                     Spacer()
-                }
-                
-                HStack {
-                    Spacer()
-                    if let math = math {
-                        Text("\(math.displayText) =")
-                        
-                        Text("?")
-                            .padding(10)
-                            .background(.gray.opacity(0.25))
-                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                    
+                    HStack {
+                        Label("\(rightAnswer)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
+                        Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
                     }
-                    Spacer()
                 }
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            }
-            .cardStyle()
-            
-            NumberPadView() { result in
-                checkAnswer(result: result)
-                math = MathHelper.generateRandomMath()
+                .cardStyle()
+                
+                VStack {
+                    HStack {
+                        Text("Frage:")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                        
+                        Spacer()
+                    }
+                    
+                    HStack {
+                        Spacer()
+                        if let math = math {
+                            Text("\(math.displayText) =")
+                             
+                            Text("?")
+                                .padding(10)
+                                .background(.gray.opacity(0.25))
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                
+                        }
+                        Spacer()
+                    }
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                }
+                .cardStyle()
+                
+                NumberPadView() { result in
+                    answer = result
+                    checkAnswer(result: result)
+                    math = MathHelper.generateRandomMath()
+                }
+                .padding(.top, 20)
             }
         }
+        .navigationBarBackButtonHidden(true)
         .onAppear {
             startTimer()
             math = MathHelper.generateRandomMath()
@@ -169,9 +178,7 @@ struct GameView: View {
         pauseTimer()
         showingResultAlert = false // Alert schließen
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            // Logik zur Navigation implementieren
-            // Beispiel:
-            // presentationMode.wrappedValue.dismiss()
+             dismiss()
         }
     }
 }

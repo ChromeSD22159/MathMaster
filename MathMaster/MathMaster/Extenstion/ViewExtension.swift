@@ -8,18 +8,28 @@
 import SwiftUI
 
 extension View {
-    func cardStyle() -> some View {
-        modifier(CardStyle())
+    func cardStyle(color: Color? = nil) -> some View {
+        modifier(CardStyle(color: color))
     }
 }
 
 struct CardStyle: ViewModifier {
+    let color: Color?
     func body(content: Content) -> some View {
-        content
-            .padding()
-            .background(Material.ultraThin)
-            .clipShape(RoundedRectangle(cornerRadius: 15))
-            .font(.headline)
-            .padding(.horizontal, 30)
+        if let color = color {
+            content
+                .padding()
+                .background(color)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .font(.headline)
+                .padding(.horizontal, 30)
+        } else {
+            content
+                .padding()
+                .background(Material.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .font(.headline)
+                .padding(.horizontal, 30)
+        }
     }
 }
