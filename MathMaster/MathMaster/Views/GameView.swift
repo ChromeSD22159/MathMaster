@@ -91,16 +91,14 @@ struct GameView: View {
                 ),
                 secondaryButton: .destructive(
                     Text("Home"),
-                    action: {
-                        // BACKTOHOME
-                    }
+                    action: navigateHome
                 )
             )
         }
     }
     
     private func startTimer() {
-        remeiningTime = 15 // gameDuration
+        remeiningTime = gameDuration
         timerJob = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             if remeiningTime > 0 {
                 remeiningTime -= 1
