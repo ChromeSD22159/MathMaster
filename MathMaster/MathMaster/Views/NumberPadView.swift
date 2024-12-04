@@ -9,57 +9,134 @@ import SwiftUI
 
 struct NumberPadView: View {
     
-    var calculationResult: (Int) -> Void
+    @State var number: [Int] = []
+    
+    var resultCalulated: Int? {
+        var resultString: String = ""
+        for number in number {
+           resultString += String(number)
+       }
+       
+       // Ergebnis-String in einen Integer umwandeln
+       if let result = Int(resultString) {
+           return result
+       } else {
+           return 0 // Oder eine andere Fehlerbehandlung
+       }
+    }
+    
+    var result: (Int) -> Void
     
     var body: some View {
-        Grid {
-            GridRow {
-                NumberPadItem("1")
-                NumberPadItem("2")
-                NumberPadItem("3")
-                
-            }
+        GeometryReader { geometry in
             
-            GridRow {
-                NumberPadItem("4")
-                NumberPadItem("5")
-                NumberPadItem("6")
-                
-            }
+            let buttonWidth = geometry.size.width / 4.5
             
-            GridRow {
-                NumberPadItem("7")
-                NumberPadItem("8")
-                NumberPadItem("9")
+            VStack {
                 
-            }
-            
-            GridRow {
-                NumberPadItem("<-")
-                NumberPadItem("0")
-                NumberPadItem("=")
+                // MARK: - Eingabe Anzeige
+                Spacer()
+                HStack {
+                    Spacer()
+                    if let resultCalulated = resultCalulated {
+                        Text("\(resultCalulated)").fontWeight(.bold)
+                    }
+                }
+                .cardStyle()
                 
                 
+                // MARK: - NumberBlock
+                HStack {
+                    Grid {
+                        GridRow {
+                            ForEach(7..<10) { number in
+                                NumberPadItem(String(number), size: buttonWidth) { resultNumber in
+                                    if let resultNumber = resultNumber {
+                                        self.number.append(resultNumber)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        GridRow {
+                            ForEach(4..<7) { number in
+                                NumberPadItem(String(number), size: buttonWidth) { resultNumber in
+                                    if let resultNumber = resultNumber {
+                                        self.number.append(resultNumber)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        GridRow(alignment: .center) {
+                            ForEach(1..<4) { number in
+                                NumberPadItem(String(number), size: buttonWidth) { resultNumber in
+                                    if let resultNumber = resultNumber {
+                                        self.number.append(resultNumber)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        GridRow {
+                            NumberPadItem("<", color: .yellow, size: buttonWidth){ number in
+                                resetNumberArray()
+                            }
+                            
+                            NumberPadItem("0", size: buttonWidth) { resultNumber in
+                                if let resultNumber = resultNumber {
+                                    self.number.append(resultNumber)
+                                }
+                            }
+                            
+                            NumberPadItem("=", color: .yellow, size: buttonWidth) { number in
+                                if let resultCalulated = resultCalulated {
+                                    result(resultCalulated)
+                                    resetNumberArray()
+                                }
+                            }
+                        }
+                    }.frame(maxWidth: .infinity, alignment: .center)
+                }
+                .cardStyle() 
+                
+                Spacer()
             }
         }
+    }
+    
+    func resetNumberArray() {
+        number = []
     }
 }
 
 struct NumberPadItem: View {
     
-    var text: String
+    let text: String
+    let color: Color
+    let size: CGFloat
+    let result: (Int?) -> Void
     
-    init(_ text: String) {
+    init(_ text: String, color: Color = .blue, size: CGFloat = 80, result: @escaping (Int?) -> Void) {
         self.text = text
+        self.color = color
+        self.size = size
+        self.result = result
     }
     
     var body: some View {
-        
         Text(text)
-    
+            .frame(width: size, height: size)
+            .background(color)
+            .clipShape(Circle())
+            .onTapGesture {
+                result(Int(text))
+            }
     }
 }
 
 #Preview {
-    NumberPadView(calculationResult: {_ in})
+    NumberPadView(result: {_ in
+        
+    })
 }

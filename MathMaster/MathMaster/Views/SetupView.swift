@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SetupView: View {
     //TODO: refektor in englisch
+    @AppStorage("user") private var userID: String = ""
+    
     @AppStorage("Schwierigkeitsgrad") private var selectedPicker = Schwierigkeitsgrad.easy
     @AppStorage("gameDuration") private var gameDuration = 60
 //    @State private var showSheet = false
