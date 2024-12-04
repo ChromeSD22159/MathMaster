@@ -37,7 +37,6 @@ struct MathHelper {
                 case .subtraction: result = number1 - number2
                 case .multiplication: result = number1 * number2
                 case .division:
-                    // Sicherstellen, dass Division ohne Rest erfolgt
                     if number2 != 0 {
                         result = number1
                         number1 = number1 * number2

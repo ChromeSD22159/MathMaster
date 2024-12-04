@@ -17,25 +17,4 @@ struct MathMasterApp: App {
                 .environment(\.currentTheme, .orange)
         }
     }
-}
-
-var localContainer: ModelContainer {
-    let schema = Schema([
-        User.self,
-        Statistic.self
-    ])
-    let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-    
-    return try! ModelContainer(for: schema, configurations: config)
-}
-
-var previewContainer: ModelContainer {
-    let schema = Schema([
-        User.self,
-        Statistic.self
-    ])
-    
-    let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-    
-    return try! ModelContainer(for: schema, configurations: config)
-}
+} 
