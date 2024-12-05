@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct SetupView: View {
-    //TODO: refektor in englisch
     @AppStorage("user") private var userID: String = ""
     
     @AppStorage("Schwierigkeitsgrad") private var selectedPicker = Schwierigkeitsgrad.easy
     @AppStorage("gameDuration") private var gameDuration = 60
-    // @State private var showSheet = false
     @AppStorage("additionToggle") private var additionToggle = false
     @AppStorage("subtractionToggle") private var subtractionToggle = false
     @AppStorage("multiplicationToggle") private var multiplicationToggle = false
@@ -38,23 +36,12 @@ struct SetupView: View {
                 
                 Form {
                     Section("Rundenlänge") {
-                        Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (30...90), step: 10)
+                        Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (10...90), step: 10)
                         
                         NavigationLink("Statistik"){
                             StatsView(userID: userID)
-//                            Button {
-//                                showSheet = true
-//                            } label: {
-//                                Text("Statistik")
-//                            }
-//                         .buttonStyle(.borderedProminent)
                         }
-//                        .sheet(isPresented: $showSheet) {
-//                            StatsView()
-//                                .presentationDetents([.large,.medium])
-//                        }
                     }
-                    
                     Section {
                         HStack(spacing: 10) {
                             Spacer()

@@ -25,6 +25,20 @@ struct StatsView: View {
     
     var body: some View {
         VStack{
+            //TODO: Button löschen
+            Button {
+                user.forEach { user in
+                    user.games.forEach { game in
+                        context.delete(game)
+                    }
+                }
+                
+                
+            } label: {
+                Text("Alle Daten löschen")
+            }
+            
+            
             Text("Stats für \(user.first?.name ?? "")")
                 .font(.title2)
             ForEach(user) { user in
