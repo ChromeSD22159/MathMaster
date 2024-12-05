@@ -23,7 +23,6 @@ struct StatsView: View {
         _user = Query(filter: predicate)
     }
     
-    
     var body: some View {
         VStack{
             Text("Stats für \(user.first?.name ?? "")")
