@@ -11,7 +11,6 @@ import SwiftData
 @Model
 class Statistic : Identifiable {
     var id: UUID
-    var name: String
     var gameType: String
     var date: Date
     var points: Int
@@ -20,9 +19,8 @@ class Statistic : Identifiable {
     
     var user: User?
     
-    init(id: UUID = .init(), name: String, gameType: String, date: Date, points: Int, rightAnswers: Int, wrongAnswers: Int) {
+    init(id: UUID = .init(), gameType: String, date: Date, points: Int, rightAnswers: Int, wrongAnswers: Int) {
         self.id = id
-        self.name = name
         self.gameType = gameType
         self.date = date
         self.points = points

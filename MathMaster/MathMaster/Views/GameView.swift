@@ -155,9 +155,10 @@ struct GameView: View {
     
     private func gameFinished() {
         if let user = user {
-            let gameResult = Statistic(name: user.name, gameType: "", date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
+            let gameResult = Statistic(gameType: "", date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
             
-            modelContext.insert(gameResult)
+            user.games.append(gameResult)
+            //modelContext.insert(gameResult)
             
             showingResultAlert = true
              
