@@ -74,7 +74,8 @@ struct GameView: View {
                         if let math = math {
                             Text("\(math.displayText) =")
                              
-                            Text("?")
+                            //Text("?")
+                            Text("\(math.result)")
                                 .padding(10)
                                 .background(.gray.opacity(0.25))
                                 .clipShape(RoundedRectangle(cornerRadius: 15))

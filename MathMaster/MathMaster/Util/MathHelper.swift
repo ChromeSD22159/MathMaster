@@ -9,12 +9,21 @@ import SwiftUI
 
 /// MathHelper zur Generierung von Rechenaufgaben
 struct MathHelper {
-    @AppStorage("difficultyLevel") private static var difficultyLevel: String = "leicht"
+
+    @AppStorage("additionToggle") private static var additionToggle = false
+    @AppStorage("subtractionToggle") private static var subtractionToggle = false
+    @AppStorage("multiplicationToggle") private static var multiplicationToggle = false
+    @AppStorage("divisionToggle") private static var divisionToggle = false
+
+
+
 
     static func generateRandomMath() -> Math {
+        @AppStorage("difficultyLevel") var difficultyLevel: String = "Leicht"
+        
         var maxResult: Int = 20
         
-        if let level = Schwierigkeitsgrad(rawValue: difficultyLevel) {
+        if let level = Schwierigkeitsgrad.from(string: difficultyLevel) {
             switch level {
                 case .easy : maxResult = 20
                 case .medium: maxResult = 50
@@ -22,8 +31,26 @@ struct MathHelper {
             }
         }
         
-        let operation = MathOperation.allCases.randomElement()!
-
+        var operations: [MathOperation] = []
+        //let operation = MathOperation.allCases.randomElement()!
+        if additionToggle {
+            operations.append(MathOperation.addition)
+        }
+        if subtractionToggle {
+            operations.append(MathOperation.subtraction)
+        }
+        if multiplicationToggle {
+            operations.append(MathOperation.multiplication)
+        }
+        if divisionToggle {
+            operations.append(MathOperation.division)
+        }
+        let operation = operations.randomElement() ?? MathOperation.addition
+        
+        print (Schwierigkeitsgrad.from(string: difficultyLevel))
+        
+        
+        
         var number1: Int
         var number2: Int
         var result: Int
@@ -31,21 +58,21 @@ struct MathHelper {
         repeat {
             number1 = Int.random(in: 1...maxResult)
             number2 = Int.random(in: 1...maxResult)
-            
+            print("\(number1) \(number2)")
             switch operation {
                 case .addition: result = number1 + number2
                 case .subtraction: result = number1 - number2
                 case .multiplication: result = number1 * number2
                 case .division:
                     if number2 != 0 {
-                        result = number1
-                        number1 = number1 * number2
+                        //result = number1
+                        result = number1 * number2
                     } else {
                         result = maxResult + 1
                     }
             }
         } while result > maxResult || result < 0
 
-        return Math(displayText: "\(number1) \(operation.rawValue) \(number2)", result: result)
+        return Math(displayText: "\(number1) \(operation.displayOperator) \(number2)", result: result)
     }
 }

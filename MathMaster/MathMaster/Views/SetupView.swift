@@ -10,7 +10,7 @@ import SwiftUI
 struct SetupView: View {
     @AppStorage("user") private var userID: String = ""
     
-    @AppStorage("Schwierigkeitsgrad") private var selectedPicker = Schwierigkeitsgrad.easy
+    @AppStorage("Schwierigkeitsgrad") private var selectedPicker = "Robert"
     @AppStorage("gameDuration") private var gameDuration = 60
     @AppStorage("additionToggle") private var additionToggle = false
     @AppStorage("subtractionToggle") private var subtractionToggle = false
@@ -28,13 +28,17 @@ struct SetupView: View {
                     .bold()
                 Picker("Schwierigkeitsgrad", selection: $selectedPicker) {
                     ForEach(Schwierigkeitsgrad.allCases) { gameType in
-                        Text(gameType.rawValue).tag(gameType)
+                        Text(gameType.rawValue).tag(gameType.rawValue)
                     }
                 }
                 .pickerStyle(.segmented)
                 .padding()
                 
-                Form {
+                //TODO: hhhh
+                .onChange(of: selectedPicker) {
+                    print(Schwierigkeitsgrad.from(string: selectedPicker))
+                }
+                    Form {
                     Section("Rundenlänge") {
                         Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (10...90), step: 10)
                         

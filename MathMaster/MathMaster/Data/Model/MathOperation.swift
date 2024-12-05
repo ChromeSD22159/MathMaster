@@ -11,4 +11,18 @@ enum MathOperation: String, CaseIterable {
     case subtraction = "-"
     case multiplication = "x"
     case division = ":"
+    
+    var displayOperator: String {
+        switch self{
+            
+        case .addition:
+            return "+"
+        case .subtraction:
+            return "-"
+        case .multiplication:
+            return "x"
+        case .division:
+            return ":"
+        }
+    }
 }
