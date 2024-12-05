@@ -24,7 +24,7 @@ struct ContentView: View {
                 }
             }
             Tab("Stats", systemImage: "list.clipboard.fill") {
-                StatsView()
+                StatsView(userID: userID)
             }
             Tab("ShowUsers", systemImage: "person.crop.circle.badge.plus") {
                 ShowUser()

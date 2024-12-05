@@ -12,10 +12,21 @@ struct StatsView: View {
     
     @Environment(\.modelContext) var context
     @Query var user: [User]
+    var userID: String
+    
+    init(userID: String) {
+        self.userID = userID
+        
+        let predicate = #Predicate<User> { user in
+            user.userID == userID
+        }
+        _user = Query(filter: predicate)
+    }
+    
     
     var body: some View {
         VStack{
-            Text("User Stats")
+            Text("Stats für \(user.first?.name ?? "")")
                 .font(.title2)
             ForEach(user) { user in
                 VStack {
@@ -23,29 +34,49 @@ struct StatsView: View {
                     Text("Alter: \(user.age)")
                     Divider()
                     
-                    ForEach(user.games) { game in
-                        HStack{
-                            Text(game.gameType)
-                            Text(game.date.formatted(date: .numeric, time: .omitted))
-                            Text("Punkte: \(game.points)")
-                            Text("Richtige: \(game.rightAnswers)")
-                            Text("Falsch: \(game.wrongAnswers)")
+                    List{
+                        ForEach(user.games.sorted { $0.date > $1.date}) { game in
+                            HStack{
+                                Text(game.gameType)
+                                Text(game.date.formatted(date: .numeric, time: .omitted))
+                                Text("Punkte: \(game.points)")
+                                Text("Richtige: \(game.rightAnswers)")
+                                Text("Falsch: \(game.wrongAnswers)")
+                            }
+                            .font(.system(size: 12))
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive, action: {
+                                    deleteStats(game: game)
+                                }){
+                                    Label("Delete", systemImage: "trash")
+                                }
+                                .tint(.red)
+                            }
                         }
-                        .font(.system(size: 12))
                         
                     }
                     
-                    Divider()
-                    
-                    
                 }
+                
+                Divider()
+                
+                
             }
         }
+        
     }
+    
+    
+    func deleteStats(game: Statistic ) {
+        context.delete(game)
+    }
+    
 }
 
 
+
+
 #Preview {
-    StatsView()
+    StatsView(userID: maria.userID)
         .modelContainer(previewContainer)
 }

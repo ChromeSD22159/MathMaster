@@ -41,7 +41,7 @@ struct SetupView: View {
                         Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (30...90), step: 10)
                         
                         NavigationLink("Statistik"){
-                            StatsView()
+                            StatsView(userID: userID)
 //                            Button {
 //                                showSheet = true
 //                            } label: {
