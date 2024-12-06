@@ -15,15 +15,15 @@ struct NumberPadView: View {
     var resultCalulated: Int? {
         var resultString: String = ""
         for number in number {
-           resultString += String(number)
-       }
-       
-       // Ergebnis-String in einen Integer umwandeln
-       if let result = Int(resultString) {
-           return result
-       } else {
-           return 0 // Oder eine andere Fehlerbehandlung
-       }
+            resultString += String(number)
+        }
+        
+        // Ergebnis-String in einen Integer umwandeln
+        if let result = Int(resultString) {
+            return result
+        } else {
+            return 0
+        }
     }
     
     var result: (Int) -> Void
@@ -31,19 +31,21 @@ struct NumberPadView: View {
     var body: some View {
         GeometryReader { geometry in
             
-            let buttonWidth = geometry.size.width / 4.5
+            let buttonWidth = geometry.size.width / 6
             
             VStack {
                 
                 // MARK: - Eingabe Anzeige
-                Spacer()
+                
                 HStack {
                     Spacer()
                     if let resultCalulated = resultCalulated {
-                        Text("\(resultCalulated)").fontWeight(.bold)
+                        Text("\(resultCalulated)")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
                     }
                 }
-                .cardStyle()
+                .padding(40)
                 
                 
                 // MARK: - NumberBlock
@@ -99,7 +101,7 @@ struct NumberPadView: View {
                         }
                     }.frame(maxWidth: .infinity, alignment: .center)
                 }
-                .cardStyle()
+                
                 
                 Spacer()
             }

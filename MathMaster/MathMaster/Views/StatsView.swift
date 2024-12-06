@@ -24,69 +24,90 @@ struct StatsView: View {
     }
     
     var body: some View {
-        VStack{
-            //TODO: Button löschen
-            Button {
-                user.forEach { user in
-                    user.games.forEach { game in
-                        context.delete(game)
+        ZStack{
+            // MARK: - Background
+            VStack {
+                Image("headerGreen")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 167)
+                    .ignoresSafeArea(edges: .top)
+                
+                Spacer()
+            }
+            
+            VStack{
+                Button {
+                    user.forEach { user in
+                        user.games.forEach { game in
+                            context.delete(game)
+                        }
                     }
+                    
+                    
+                } label: {
+                    Spacer()
+                    Image(systemName: "trash")
+                        .tint(.red)
+                        .padding(.trailing, 24)
                 }
                 
                 
-            } label: {
-                Text("Alle Daten löschen")
-            }
-            
-            
-            Text("Stats für \(user.first?.name ?? "")")
-                .font(.title2)
-            ForEach(user) { user in
-                VStack {
-                    Text(user.name)
-                    Text("Alter: \(user.age)")
-                    Divider()
-                    
-                    List{
-                        ForEach(user.games.sorted { $0.date > $1.date}) { game in
-                            HStack{
-                                Text(game.gameType)
-                                Text(game.date.formatted(date: .numeric, time: .omitted))
-                                Text("Punkte: \(game.points)")
-                                Text("Richtige: \(game.rightAnswers)")
-                                Text("Falsch: \(game.wrongAnswers)")
-                            }
-                            .font(.system(size: 12))
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive, action: {
-                                    deleteStats(game: game)
-                                }){
-                                    Label("Delete", systemImage: "trash")
+                Text("Statistik für \(user.first?.name ?? "")")
+                    .font(.title2)
+                    .bold()
+                
+                ForEach(user) { user in
+                    VStack {
+                      
+                        
+                        List {
+                            ForEach(user.games.sorted { $0.date > $1.date}) { game in
+                                VStack(spacing: 10){
+                                    HStack{
+                                        Text(game.gameType)
+                                        Spacer()
+                                        Text(game.date.formatted(date: .numeric, time: .omitted))
+                                        
+                                    }
+                                    HStack{
+                                        Image(systemName: "checkmark.seal")
+                                            .foregroundStyle(.green)
+                                        Text("\(game.rightAnswers)")
+                                        Spacer()
+                                        Image(systemName: "xmark.seal")
+                                            .foregroundStyle(.red)
+                                        Text("\(game.wrongAnswers)")
+                                        Spacer()
+                                        Text("Punkte: \(game.points)")
+                                    }
                                 }
-                                .tint(.red)
+                                .font(.system(size: 16))
+                                .swipeActions(edge: .trailing) {
+                                    Button(role: .destructive, action: {
+                                        deleteStats(game: game)
+                                    }){
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                    .tint(.red)
+                                }
                             }
                         }
-                        
+                        .scrollContentBackground(.hidden)
                     }
                     
+                    Divider()
+                    
                 }
-                
-                Divider()
-                
-                
             }
         }
-        
     }
     
     
     func deleteStats(game: Statistic ) {
         context.delete(game)
     }
-    
 }
-
-
 
 
 #Preview {

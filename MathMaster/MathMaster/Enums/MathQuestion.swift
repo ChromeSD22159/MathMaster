@@ -7,7 +7,7 @@
 
 
 /// Model für Rechenaufgabe
-struct Math {
+struct MathQuestion {
     let displayText: String
     let result: Int
 }

@@ -29,14 +29,14 @@ var previewContainer: ModelContainer {
         Statistic.self
     ])
     
-
+    
     
     let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: schema, configurations: config)
     
     maria.games = statsMaria
     container.mainContext.insert(maria)
-
+    
     robert.games = statsRobert
     container.mainContext.insert(robert)
     

@@ -13,32 +13,67 @@ struct ShowUser: View {
     
     @Query(sort: \User.age, order: .reverse) var user: [User]
     
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
+    
     @State private var showSheetOnbording = false
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(user) { user in
-                        HStack {
-                            Text("\(user.name)")
-                            Spacer()
-                            Text("\(user.age) Jahre alt")
-                        }
+            ZStack {
+                // MARK: - Background
+                VStack {
+                    Image("headerGreen")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 167)
+                        .ignoresSafeArea(edges: .top)
                     
+                    Spacer()
+                }
+                
+                VStack(spacing: 0) {
+                    
+                    List {
+                        ForEach(user) { user in
+                            HStack {
+                                Text("\(user.name)")
+                                
+                                if user.userID == userID {
+                                    Image(systemName: "star.fill")
+                                }
+                                
+                                Spacer()
+                                Text("\(user.age) Jahre alt")
+                            }
+                            .onTapGesture {
+                                withAnimation {
+                                    userID = user.userID
+                                }
+                            }
+                        }
+                    }.scrollContentBackground(.hidden)
                 }
             }
             .navigationTitle("User")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("", systemImage: "plus") {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
                         showSheetOnbording = true
-                    }
-                    .sheet(isPresented: $showSheetOnbording) {
-                        OnboardingView()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .tint(.green)
                     }
                 }
             }
-            
+            .sheet(isPresented: $showSheetOnbording) {
+                AddUserSheet()
+            }
         }
     }
+}
+
+#Preview {
+    ShowUser()
+        .modelContainer(previewContainer)
 }

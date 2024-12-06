@@ -6,19 +6,19 @@
 //
 import Foundation
 import SwiftUI
-
+ 
 /// MathHelper zur Generierung von Rechenaufgaben
 struct MathHelper {
-  @AppStorage("Schwierigkeitsgrad") private static var selectedDifficultyString: String = "Leicht"
-  @AppStorage("additionToggle") private static var additionToggle = false
-  @AppStorage("subtractionToggle") private static var subtractionToggle = false
-  @AppStorage("multiplicationToggle") private static var multiplicationToggle = false
-  @AppStorage("divisionToggle") private static var divisionToggle = false
-  static func generateRandomMath() -> Math {
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private static var selectedDifficultyString: String = "Leicht"
+    @AppStorage(AppStorageKey.additionToggle.rawValue) private static var additionToggle = false
+    @AppStorage(AppStorageKey.subtractionToggle.rawValue) private static var subtractionToggle = false
+    @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private static var multiplicationToggle = false
+    @AppStorage(AppStorageKey.divisionToggle.rawValue) private static var divisionToggle = false
+  static func generateRandomMath() -> MathQuestion {
     var maxResult: Int = 20
-    var selectedDifficulty: Schwierigkeitsgrad {
+    var selectedDifficulty: LevelOfDifficulty {
       get {
-        return Schwierigkeitsgrad(rawValue: selectedDifficultyString) ?? .easy
+        return LevelOfDifficulty(rawValue: selectedDifficultyString) ?? .easy
       }
       set {
         selectedDifficultyString = newValue.rawValue
@@ -30,7 +30,6 @@ struct MathHelper {
       case .hard: maxResult = 100
     }
     var operations: [MathOperation] = []
-    //let operation = MathOperation.allCases.randomElement()!
     if additionToggle {
       operations.append(MathOperation.addition)
     }
@@ -58,13 +57,12 @@ struct MathHelper {
         case .multiplication: result = number1 * number2
         case .division:
           if number2 != 0 {
-            //result = number1
             result = number1 * number2
           } else {
             result = maxResult + 1
           }
       }
     } while result > maxResult || result < 0
-    return Math(displayText: "\(number1) \(operation.displayOperator) \(number2)", result: result)
+    return MathQuestion(displayText: "\(number1) \(operation.displayOperator) \(number2)", result: result)
   }
 }

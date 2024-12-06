@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct SetupView: View {
-  @AppStorage("user") private var userID: String = ""
-  @AppStorage("Schwierigkeitsgrad") private var selectedDifficultyString: String = "Leicht"
-  @AppStorage("gameDuration") private var gameDuration = 60
-  @AppStorage("additionToggle") private var additionToggle = false
-  @AppStorage("subtractionToggle") private var subtractionToggle = false
-  @AppStorage("multiplicationToggle") private var multiplicationToggle = false
-  @AppStorage("divisionToggle") private var divisionToggle = false
-  @State var currentTheme: Theme = .orange
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var selectedDifficultyString: String = "Leicht"
+    @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
+    @AppStorage(AppStorageKey.additionToggle.rawValue) private var additionToggle = true
+    @AppStorage(AppStorageKey.subtractionToggle.rawValue) private var subtractionToggle = true
+    @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private var multiplicationToggle = true
+    @AppStorage(AppStorageKey.divisionToggle.rawValue) private var divisionToggle = true
+    @State var currentTheme: Theme = .orange
+    
   var body: some View {
     NavigationStack {
       VStack {
@@ -23,7 +24,7 @@ struct SetupView: View {
           .font(.headline)
           .bold()
         Picker("Schwierigkeitsgrad", selection: $selectedDifficultyString) {
-          ForEach(Schwierigkeitsgrad.allCases) { gameType in
+          ForEach(LevelOfDifficulty.allCases) { gameType in
             Text(gameType.rawValue).tag(gameType.rawValue)
           }
         }
@@ -31,7 +32,7 @@ struct SetupView: View {
         .padding()
         Form {
           Section("Rundenlänge") {
-            Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (10...90), step: 10)
+            Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (5...90), step: 10)
             NavigationLink("Statistik"){
               StatsView(userID: userID)
             }

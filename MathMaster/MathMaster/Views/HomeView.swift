@@ -12,33 +12,68 @@ struct HomeView: View {
     var user: User?
     
     var body: some View {
-        NavigationLink(destination: GameView(user: user)) {
-            ZStack(alignment: .leading) {
-                
-                Image(.PNGMATH)
+        ZStack(alignment: .top) {
+            // MARK: - Background
+            VStack {
+                Image("headerGreen")
                     .resizable()
-                    .frame(width: 150, height: 150)
+                    .scaledToFill()
+                    .frame(height: 161)
+                    .ignoresSafeArea(edges: .top)
                 
-                HStack {
-                    Spacer()
-                    VStack(alignment: .center, spacing: 20) {
-                        Text("Play Math Master")
-                        
-                        ZStack {
-                            Circle()
-                                .fill(Material.ultraThin.opacity(0.55))
-                                .frame(width: 50)
-                            
-                            Image(systemName: "play.fill")
-                                .font(.largeTitle)
-                        }
-                        
-                        
-                    }
+                Spacer()
+            }
+            
+            // MARK: - ViewContent
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 20){
+                    Text("\(user?.name ?? "UserName"), was möchtest\ndu heute spielen?")
+                        .font(.title)
+                        .bold()
+                        .padding(.horizontal, 30)
+                    
+                    
+                    Card(user: user)
+                    
                 }
             }
-            .foregroundStyle(.white)
-            .cardStyle(color: theme.calculatorSymbolBackgroundColor)
+            .contentMargins([.top], 75)
+        }
+    }
+    
+    private struct Card: View {
+        @Environment(\.currentTheme) var theme
+        let user: User?
+        var body: some View {
+            NavigationLink(destination: GameView(user: user)) {
+                ZStack(alignment: .leading) {
+                    
+                    Image(.PNGMATH)
+                        .resizable()
+                        .frame(width: 120, height: 120)
+                    
+                    HStack {
+                        Spacer()
+                        VStack(alignment: .center, spacing: 20) {
+                            Text("Kopfrechnen")
+                                .font(.title)
+                            
+                            ZStack {
+                                Circle()
+                                    .fill(Material.ultraThin.opacity(0.55))
+                                    .frame(width: 50)
+                                
+                                Image(systemName: "play.fill")
+                                    .font(.largeTitle)
+                            }
+                            
+                            
+                        }
+                    }
+                }
+                .foregroundStyle(.white)
+                .cardStyle(color: theme.calculatorSymbolBackgroundColor)
+            }
         }
     }
 }

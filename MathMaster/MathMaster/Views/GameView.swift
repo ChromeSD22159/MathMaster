@@ -6,23 +6,24 @@
 //
 import SwiftUI
 import SwiftData
-
+ 
 struct GameView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     
     var user: User?
-     
-    /// GameLength from Settings
-    @AppStorage("gameDuration") private var gameDuration = 60
     
-    /// TImer States
-    @State var remeiningTime: Int = 0
+    /// GameLength from Settings
+    @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var schwierigkeitsgrad = "Leicht"
+    
+    /// Timer States
+    @State var remainingTime: Int = 0
     @State var timerJob: Timer?
     @State var saved = false
     
     /// Game States
-    @State var math: Math?
+    @State var math: MathQuestion?
     @State var rightAnswer: Int = 0
     @State var wrongAnswer: Int = 0
     @State var points = 0
@@ -34,65 +35,74 @@ struct GameView: View {
     
     /// Switch RemainingTime Color By Left Time
     var timerColor: Color {
-        remeiningTime < 10 ? .red : timerJob == nil ? .gray : .green
+        remainingTime < 10 ? .red : timerJob == nil ? .gray : .green
     }
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            VStack {
-                HStack {
-                    Label("\(remeiningTime)", systemImage: "timer")
-                        .foregroundStyle(timerColor)
-                        .onTapGesture {
-                            if timerJob == nil {
-                                restartTimer()
-                            } else {
-                                pauseTimer()
-                            }
-                        }
-                    
-                    Spacer()
-                    
-                    HStack {
-                        Label("\(rightAnswer)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
-                        Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
-                    }
-                }
-                .cardStyle()
-                
+        
+        ZStack(alignment: .leading){
+            /// Hintergrund
+            Image("backgroundGame")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     HStack {
-                        Text("Frage:")
-                            .font(.headline)
-                            .fontWeight(.semibold)
+                        Label("\(remainingTime)", systemImage: "timer")
+                            .foregroundStyle(timerColor)
+                            .onTapGesture {
+                                if timerJob == nil {
+                                    restartTimer()
+                                } else {
+                                    pauseTimer()
+                                }
+                            }
                         
                         Spacer()
+                        
+                        HStack {
+                            Label("\(rightAnswer)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
+                            Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
+                        }
                     }
                     
-                    HStack {
-                        Spacer()
-                        if let math = math {
-                            Text("\(math.displayText) =")
-                             
-                            Text("?")
-                                .padding(10)
-                                .background(.gray.opacity(0.25))
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .padding(32)
+                    
+                    
+                    VStack {
+                        
+                        
+                        HStack {
+                            Spacer()
+                            if let math = math {
+                                Text("\(math.displayText) =")
                                 
+                                Text("?")
+                                    .padding(10)
+                                    .background(.gray.opacity(0.25))
+                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                
+                            }
+                            Spacer()
                         }
-                        Spacer()
+                        .font(.system(size: 48))
+                        .fontWeight(.bold)
                     }
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .padding(32)
+                    
+                    NumberPadView() { result in
+                        answer = result
+                        checkAnswer(result: result)
+                        math = MathHelper.generateRandomMath()
+                    }
+                    
                 }
-                .cardStyle()
-                
-                NumberPadView() { result in
-                    answer = result
-                    checkAnswer(result: result)
-                    math = MathHelper.generateRandomMath()
-                }
-                .padding(.top, 20)
+            }
+            .padding(.top, 40)
+            if showingResultAlert {
+                AlertView(points: points, home: navigateHome, newGame: restartGame)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -103,30 +113,31 @@ struct GameView: View {
         .onDisappear{
             pauseTimer()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                 dismiss()
+                dismiss()
             }
         }
-        .alert(isPresented: $showingResultAlert) {
-            Alert(
-                title: Text("Spiel zuende!"),
-                message: Text("Dein Punktestand: \(points)"),
-                primaryButton: .default(
-                    Text("Nocheinmal Spielen"),
-                    action: restartGame
-                ),
-                secondaryButton: .destructive(
-                      Text("Home"),
-                      action: navigateHome
-                )
-            )
-        }
+        .overlay(
+            Group {
+                if showingResultAlert {
+                    AlertView(points: points, home: {
+                        showingResultAlert = false
+                        navigateHome()
+                    }, newGame: {
+                        showingResultAlert = false
+                        restartGame()
+                    })
+                    .background(Color.black.opacity(0.5).ignoresSafeArea())
+                }
+            }
+        )
+        
     }
     
     private func startTimer() {
-        remeiningTime = gameDuration
+        remainingTime = gameDuration
         timerJob = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if remeiningTime > 0 {
-                remeiningTime -= 1
+            if remainingTime > 0 {
+                remainingTime -= 1
             } else {
                 gameFinished()
             }
@@ -140,8 +151,8 @@ struct GameView: View {
     
     private func restartTimer() {
         timerJob = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if remeiningTime > 0 {
-                remeiningTime -= 1
+            if remainingTime > 0 {
+                remainingTime -= 1
             } else {
                 pauseTimer()
                 gameFinished()
@@ -162,15 +173,12 @@ struct GameView: View {
     private func gameFinished() {
         guard saved == false else {return}
         if let user = user {
-            let gameResult = Statistic(gameType: "", date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
+            let gameResult = Statistic(gameType: schwierigkeitsgrad, date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
             
             user.games.append(gameResult)
-            //modelContext.insert(gameResult)
             
             showingResultAlert = true
-            saved = true
-            // TODO: FIND #Ranking in POINT DB
-            
+            saved = true 
         }
     }
     
@@ -188,7 +196,12 @@ struct GameView: View {
         pauseTimer()
         showingResultAlert = false // Alert schließen
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-             dismiss()
+            dismiss()
         }
     }
+}
+
+#Preview {
+    GameView()
+        .modelContainer(previewContainer)
 }
