@@ -14,6 +14,7 @@ struct MathHelper {
     @AppStorage(AppStorageKey.subtractionToggle.rawValue) private static var subtractionToggle = false
     @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private static var multiplicationToggle = false
     @AppStorage(AppStorageKey.divisionToggle.rawValue) private static var divisionToggle = false
+    
   static func generateRandomMath() -> MathQuestion {
     var maxResult: Int = 20
     var selectedDifficulty: LevelOfDifficulty {
