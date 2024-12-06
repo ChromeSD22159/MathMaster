@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct ThemeService {
-    @AppStorage("Theme") static var theme: String = Theme.orange.rawValue
+    @AppStorage("Theme") static var theme: String = Theme.mint.rawValue
     
     static func setTheme(_ theme: Theme) {
         ThemeService.theme = theme.rawValue
@@ -25,11 +25,13 @@ struct ThemeService {
 enum Theme: String, CaseIterable {
     case orange = "Orange"
     case blue = "Blau"
+    case mint = "Mint"
     
     var calculatorSymbolBackgroundColor: Color {
         switch self {
-            case .orange: return .red
+            case .orange: return .gray
             case .blue: return .blue
+            case .mint: return Color("mint")
         }
     }
     
@@ -37,6 +39,7 @@ enum Theme: String, CaseIterable {
         switch self {
             case .orange: return .orange
             case .blue: return .yellow
+            case .mint: return .mint
         }
     }
     
@@ -46,6 +49,7 @@ enum Theme: String, CaseIterable {
         switch self {
             case .orange: stops = [.orange, .red.opacity(0.5)]
             case .blue: stops = [.blue, .purple.opacity(0.5)]
+            case .mint: stops = [.mint, .yellow.opacity(0.5)]
         }
         
         return LinearGradient(gradient: Gradient(

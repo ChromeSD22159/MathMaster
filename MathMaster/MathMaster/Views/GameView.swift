@@ -39,7 +39,14 @@ struct GameView: View {
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack {
+            ZStack(alignment: .leading){
+                /// Hintergrund
+                Image("backgroundGame")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                
+                VStack {
                 HStack {
                     Label("\(remeiningTime)", systemImage: "timer")
                         .foregroundStyle(timerColor)
@@ -58,41 +65,47 @@ struct GameView: View {
                         Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
                     }
                 }
-                .cardStyle()
+               //.cardStyle()
+                .padding(32)
+                
                 
                 VStack {
-                    HStack {
-                        Text("Frage:")
+                   /* HStack {
+                        Text("Aufgabe:")
                             .font(.headline)
                             .fontWeight(.semibold)
                         
                         Spacer()
-                    }
+                    }*/
                     
                     HStack {
                         Spacer()
                         if let math = math {
                             Text("\(math.displayText) =")
-                             
+                            
                             Text("?")
                                 .padding(10)
                                 .background(.gray.opacity(0.25))
                                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                                
+                            
                         }
                         Spacer()
                     }
-                    .font(.largeTitle)
+                    .font(.system(size: 48))
                     .fontWeight(.bold)
                 }
-                .cardStyle()
+                .padding(32)
                 
                 NumberPadView() { result in
                     answer = result
                     checkAnswer(result: result)
                     math = MathHelper.generateRandomMath()
                 }
-                .padding(.top, 20)
+              //  .padding(.top, 10)
+            }
+            }
+            if showingResultAlert {
+                AlertView(points: points, home: navigateHome, newGame: restartGame)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -106,20 +119,35 @@ struct GameView: View {
                  dismiss()
             }
         }
-        .alert(isPresented: $showingResultAlert) {
+        .overlay(
+            Group {
+                if showingResultAlert {
+                    AlertView(points: points, home: {
+                        showingResultAlert = false
+                        navigateHome()
+                    }, newGame: {
+                        showingResultAlert = false
+                        restartGame()
+                    })
+                    .background(Color.black.opacity(0.5).ignoresSafeArea())
+                }
+            }
+        )
+       /* .alert(isPresented: $showingResultAlert) {
             Alert(
-                title: Text("Spiel zuende!"),
-                message: Text("Dein Punktestand: \(points)"),
-                primaryButton: .default(
-                    Text("Nocheinmal Spielen"),
-                    action: restartGame
-                ),
-                secondaryButton: .destructive(
+                title: Text("Super Spiel!"),
+                message: Text("Deine Punkte: \(points)"),
+                primaryButton: .destructive(
                       Text("Home"),
                       action: navigateHome
+                ),
+                secondaryButton: .default(
+                    Text("Neues Spiel"),
+                    action: restartGame
                 )
+                
             )
-        }
+        }*/
     }
     
     private func startTimer() {

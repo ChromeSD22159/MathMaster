@@ -31,19 +31,22 @@ struct NumberPadView: View {
     var body: some View {
         GeometryReader { geometry in
             
-            let buttonWidth = geometry.size.width / 4.5
+            let buttonWidth = geometry.size.width / 6
             
             VStack {
                 
                 // MARK: - Eingabe Anzeige
-                Spacer()
+              //  Spacer()
                 HStack {
                     Spacer()
                     if let resultCalulated = resultCalulated {
-                        Text("\(resultCalulated)").fontWeight(.bold)
+                        Text("\(resultCalulated)")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
                     }
                 }
-                .cardStyle()
+              //  .cardStyle()
+                .padding(40)
                 
                 
                 // MARK: - NumberBlock
@@ -99,7 +102,7 @@ struct NumberPadView: View {
                         }
                     }.frame(maxWidth: .infinity, alignment: .center)
                 }
-                .cardStyle()
+                
                 
                 Spacer()
             }

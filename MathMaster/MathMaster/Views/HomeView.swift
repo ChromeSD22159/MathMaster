@@ -12,33 +12,53 @@ struct HomeView: View {
     var user: User?
     
     var body: some View {
-        NavigationLink(destination: GameView(user: user)) {
-            ZStack(alignment: .leading) {
-                
-                Image(.PNGMATH)
-                    .resizable()
-                    .frame(width: 150, height: 150)
-                
-                HStack {
-                    Spacer()
-                    VStack(alignment: .center, spacing: 20) {
-                        Text("Play Math Master")
+        VStack{
+            Image("headerHome")
+                .resizable()
+                .scaledToFill()
+                .frame(height: 161)
+                .ignoresSafeArea(edges: .top)
+            
+            
+            VStack(alignment: .leading, spacing: 20){
+                Text("\(user?.name ?? "User"), was möchtest\ndu heute spielen?")
+                    .font(.title)
+                    .bold()
+               
+                //Start
+                NavigationLink(destination: GameView(user: user)) {
+                    ZStack(alignment: .leading) {
                         
-                        ZStack {
-                            Circle()
-                                .fill(Material.ultraThin.opacity(0.55))
-                                .frame(width: 50)
-                            
-                            Image(systemName: "play.fill")
-                                .font(.largeTitle)
+                        Image(.PNGMATH)
+                            .resizable()
+                            .frame(width: 120, height: 120)
+                        
+                        HStack {
+                            Spacer()
+                            VStack(alignment: .center, spacing: 20) {
+                                Text("Kopfrechnen")
+                                    .font(.title)
+                                
+                                ZStack {
+                                    Circle()
+                                        .fill(Material.ultraThin.opacity(0.55))
+                                        .frame(width: 50)
+                                    
+                                    Image(systemName: "play.fill")
+                                        .font(.largeTitle)
+                                }
+                                
+                                
+                            }
                         }
-                        
-                        
                     }
-                }
+                    .foregroundStyle(.white)
+                    .cardStyle(color: theme.calculatorSymbolBackgroundColor)
+                }//Ende
+                .padding(.top, 20)
             }
-            .foregroundStyle(.white)
-            .cardStyle(color: theme.calculatorSymbolBackgroundColor)
+            .padding(.horizontal, 20)
+            .padding(.top, -30)
         }
     }
 }
