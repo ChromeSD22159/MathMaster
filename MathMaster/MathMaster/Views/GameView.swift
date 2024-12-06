@@ -16,7 +16,7 @@ struct GameView: View {
     @Environment(\.dismiss) var dismiss
     
     var user: User?
-     
+    
     /// GameLength from Settings
     @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
     
@@ -51,62 +51,56 @@ struct GameView: View {
                     .ignoresSafeArea()
                 
                 VStack {
-                HStack {
-                    Label("\(remeiningTime)", systemImage: "timer")
-                        .foregroundStyle(timerColor)
-                        .onTapGesture {
-                            if timerJob == nil {
-                                restartTimer()
-                            } else {
-                                pauseTimer()
-                            }
-                        }
-                    
-                    Spacer()
-                    
                     HStack {
-                        Label("\(rightAnswer)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
-                        Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
-                    }
-                }
-               //.cardStyle()
-                .padding(32)
-                
-                
-                VStack {
-                   /* HStack {
-                        Text("Aufgabe:")
-                            .font(.headline)
-                            .fontWeight(.semibold)
+                        Label("\(remeiningTime)", systemImage: "timer")
+                            .foregroundStyle(timerColor)
+                            .onTapGesture {
+                                if timerJob == nil {
+                                    restartTimer()
+                                } else {
+                                    pauseTimer()
+                                }
+                            }
                         
                         Spacer()
-                    }*/
-                    
-                    HStack {
-                        Spacer()
-                        if let math = math {
-                            Text("\(math.displayText) =")
-                            
-                            Text("?")
-                                .padding(10)
-                                .background(.gray.opacity(0.25))
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                            
+                        
+                        HStack {
+                            Label("\(rightAnswer)", systemImage: "checkmark.seal.fill").foregroundStyle(.green)
+                            Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
                         }
-                        Spacer()
                     }
-                    .font(.system(size: 48))
-                    .fontWeight(.bold)
+                  
+                    .padding(32)
+                    
+                    
+                    VStack {
+                      
+                        
+                        HStack {
+                            Spacer()
+                            if let math = math {
+                                Text("\(math.displayText) =")
+                                
+                                Text("?")
+                                    .padding(10)
+                                    .background(.gray.opacity(0.25))
+                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                
+                            }
+                            Spacer()
+                        }
+                        .font(.system(size: 48))
+                        .fontWeight(.bold)
+                    }
+                    .padding(32)
+                    
+                    NumberPadView() { result in
+                        answer = result
+                        checkAnswer(result: result)
+                        math = MathHelper.generateRandomMath()
+                    }
+                  
                 }
-                .padding(32)
-                
-                NumberPadView() { result in
-                    answer = result
-                    checkAnswer(result: result)
-                    math = MathHelper.generateRandomMath()
-                }
-              //  .padding(.top, 10)
-            }
             }
             if showingResultAlert {
                 AlertView(points: points, home: navigateHome, newGame: restartGame)
@@ -120,7 +114,7 @@ struct GameView: View {
         .onDisappear{
             pauseTimer()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                 dismiss()
+                dismiss()
             }
         }
         .overlay(
@@ -137,21 +131,7 @@ struct GameView: View {
                 }
             }
         )
-       /* .alert(isPresented: $showingResultAlert) {
-            Alert(
-                title: Text("Super Spiel!"),
-                message: Text("Deine Punkte: \(points)"),
-                primaryButton: .destructive(
-                      Text("Home"),
-                      action: navigateHome
-                ),
-                secondaryButton: .default(
-                    Text("Neues Spiel"),
-                    action: restartGame
-                )
-                
-            )
-        }*/
+   
     }
     
     private func startTimer() {
@@ -197,7 +177,6 @@ struct GameView: View {
             let gameResult = Statistic(gameType: "", date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
             
             user.games.append(gameResult)
-            //modelContext.insert(gameResult)
             
             showingResultAlert = true
             saved = true
@@ -220,7 +199,7 @@ struct GameView: View {
         pauseTimer()
         showingResultAlert = false // Alert schließen
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-             dismiss()
+            dismiss()
         }
     }
 }

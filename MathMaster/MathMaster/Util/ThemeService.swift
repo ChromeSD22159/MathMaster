@@ -29,7 +29,7 @@ enum Theme: String, CaseIterable {
     
     var calculatorSymbolBackgroundColor: Color {
         switch self {
-            case .orange: return .gray
+            case .orange: return .orange
             case .blue: return .blue
             case .mint: return Color("mint")
         }
