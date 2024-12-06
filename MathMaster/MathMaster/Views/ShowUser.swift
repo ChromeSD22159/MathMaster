@@ -32,7 +32,6 @@ struct ShowUser: View {
                 }
                 
                 VStack(spacing: 0) {
-                    Spacer().frame(height: 167)
                     
                     List {
                         ForEach(user) { user in
@@ -52,7 +51,7 @@ struct ShowUser: View {
                                 }
                             }
                         }
-                    }
+                    }.scrollContentBackground(.hidden)
                 }
             }
             .navigationTitle("User")

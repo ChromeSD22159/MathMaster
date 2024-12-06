@@ -6,11 +6,7 @@
 //
 import SwiftUI
 import SwiftData
-
-enum AppStorageKey: String {
-    case user, schwierigkeitsgrad, subtractionToggle, additionToggle, multiplicationToggle, divisionToggle, Theme, gameDuration
-}
-
+ 
 struct GameView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
@@ -19,7 +15,7 @@ struct GameView: View {
     
     /// GameLength from Settings
     @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
-    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var schwierigkeitsgrad = ""
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var schwierigkeitsgrad = "Leicht"
     
     /// Timer States
     @State var remainingTime: Int = 0
@@ -182,9 +178,7 @@ struct GameView: View {
             user.games.append(gameResult)
             
             showingResultAlert = true
-            saved = true
-            // TODO: FIND #Ranking in POINT DB
-            
+            saved = true 
         }
     }
     

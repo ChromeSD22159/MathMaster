@@ -11,10 +11,10 @@ struct SetupView: View {
     @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
     @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var selectedDifficultyString: String = "Leicht"
     @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
-    @AppStorage(AppStorageKey.additionToggle.rawValue) private var additionToggle = false
-    @AppStorage(AppStorageKey.subtractionToggle.rawValue) private var subtractionToggle = false
-    @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private var multiplicationToggle = false
-    @AppStorage(AppStorageKey.divisionToggle.rawValue) private var divisionToggle = false
+    @AppStorage(AppStorageKey.additionToggle.rawValue) private var additionToggle = true
+    @AppStorage(AppStorageKey.subtractionToggle.rawValue) private var subtractionToggle = true
+    @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private var multiplicationToggle = true
+    @AppStorage(AppStorageKey.divisionToggle.rawValue) private var divisionToggle = true
     @State var currentTheme: Theme = .orange
     
   var body: some View {
@@ -32,7 +32,7 @@ struct SetupView: View {
         .padding()
         Form {
           Section("Rundenlänge") {
-            Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (10...90), step: 10)
+            Stepper("Rundenlänge: \(gameDuration) sek.", value: $gameDuration, in: (5...90), step: 10)
             NavigationLink("Statistik"){
               StatsView(userID: userID)
             }

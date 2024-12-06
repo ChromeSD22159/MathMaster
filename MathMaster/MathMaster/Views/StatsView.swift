@@ -61,9 +61,9 @@ struct StatsView: View {
                     VStack {
                       
                         
-                        List{
+                        List {
                             ForEach(user.games.sorted { $0.date > $1.date}) { game in
-                                VStack{
+                                VStack(spacing: 10){
                                     HStack{
                                         Text(game.gameType)
                                         Spacer()
@@ -93,6 +93,7 @@ struct StatsView: View {
                                 }
                             }
                         }
+                        .scrollContentBackground(.hidden)
                     }
                     
                     Divider()
