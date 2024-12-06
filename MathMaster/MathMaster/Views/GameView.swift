@@ -26,7 +26,7 @@ struct GameView: View {
     @State var saved = false
     
     /// Game States
-    @State var math: Math?
+    @State var math: MathQuestion?
     @State var rightAnswer: Int = 0
     @State var wrongAnswer: Int = 0
     @State var points = 0

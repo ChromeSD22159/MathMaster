@@ -14,7 +14,7 @@ struct MathHelper {
     @AppStorage(AppStorageKey.subtractionToggle.rawValue) private static var subtractionToggle = false
     @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private static var multiplicationToggle = false
     @AppStorage(AppStorageKey.divisionToggle.rawValue) private static var divisionToggle = false
-  static func generateRandomMath() -> Math {
+  static func generateRandomMath() -> MathQuestion {
     var maxResult: Int = 20
     var selectedDifficulty: Schwierigkeitsgrad {
       get {
@@ -65,6 +65,6 @@ struct MathHelper {
           }
       }
     } while result > maxResult || result < 0
-    return Math(displayText: "\(number1) \(operation.displayOperator) \(number2)", result: result)
+    return MathQuestion(displayText: "\(number1) \(operation.displayOperator) \(number2)", result: result)
   }
 }
