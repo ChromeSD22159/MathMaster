@@ -29,17 +29,17 @@ enum Theme: String, CaseIterable {
     
     var calculatorSymbolBackgroundColor: Color {
         switch self {
-            case .orange: return .orange
-            case .blue: return .blue
-            case .mint: return Color("mint")
+        case .orange: return .orange
+        case .blue: return .blue
+        case .mint: return Color(hex: 0xB4DECB)
         }
     }
     
     var calculatorNumberBackgroundColor: Color {
         switch self {
-            case .orange: return .orange
-            case .blue: return .yellow
-            case .mint: return .mint
+        case .orange: return .orange
+        case .blue: return .yellow
+        case .mint: return .mint
         }
     }
     
@@ -47,15 +47,15 @@ enum Theme: String, CaseIterable {
         var stops: [Color]
         
         switch self {
-            case .orange: stops = [.orange, .red.opacity(0.5)]
-            case .blue: stops = [.blue, .purple.opacity(0.5)]
-            case .mint: stops = [.mint, .yellow.opacity(0.5)]
+        case .orange: stops = [.orange, .red.opacity(0.5)]
+        case .blue: stops = [.blue, .purple.opacity(0.5)]
+        case .mint: stops = [.mint, .yellow.opacity(0.5)]
         }
         
         return LinearGradient(gradient: Gradient(
             colors: stops),
-           startPoint: .topLeading,
-           endPoint: .bottomTrailing
+                              startPoint: .topLeading,
+                              endPoint: .bottomTrailing
         )
     }
 }

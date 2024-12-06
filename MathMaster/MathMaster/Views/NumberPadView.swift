@@ -15,15 +15,15 @@ struct NumberPadView: View {
     var resultCalulated: Int? {
         var resultString: String = ""
         for number in number {
-           resultString += String(number)
-       }
-       
-       // Ergebnis-String in einen Integer umwandeln
-       if let result = Int(resultString) {
-           return result
-       } else {
-           return 0 // Oder eine andere Fehlerbehandlung
-       }
+            resultString += String(number)
+        }
+        
+        // Ergebnis-String in einen Integer umwandeln
+        if let result = Int(resultString) {
+            return result
+        } else {
+            return 0
+        }
     }
     
     var result: (Int) -> Void
@@ -36,7 +36,7 @@ struct NumberPadView: View {
             VStack {
                 
                 // MARK: - Eingabe Anzeige
-              //  Spacer()
+                
                 HStack {
                     Spacer()
                     if let resultCalulated = resultCalulated {
@@ -45,7 +45,6 @@ struct NumberPadView: View {
                             .fontWeight(.bold)
                     }
                 }
-              //  .cardStyle()
                 .padding(40)
                 
                 

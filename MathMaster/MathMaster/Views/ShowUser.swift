@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
- 
+
 struct ShowUser: View {
     @Environment(\.modelContext) var context
     
@@ -19,37 +19,57 @@ struct ShowUser: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(user) { user in
-                        HStack {
-                            Text("\(user.name)")
-                            
-                            if user.userID == userID {
-                                Image(systemName: "star.fill")
+            ZStack {
+                // MARK: - Background
+                VStack {
+                    Image("headerGreen")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 167)
+                        .ignoresSafeArea(edges: .top)
+                    
+                    Spacer()
+                }
+                
+                VStack(spacing: 0) {
+                    Spacer().frame(height: 167)
+                    
+                    List {
+                        ForEach(user) { user in
+                            HStack {
+                                Text("\(user.name)")
+                                
+                                if user.userID == userID {
+                                    Image(systemName: "star.fill")
+                                }
+                                
+                                Spacer()
+                                Text("\(user.age) Jahre alt")
                             }
-                            
-                            Spacer()
-                            Text("\(user.age) Jahre alt")
-                        }
-                        .onTapGesture {
-                            withAnimation {
-                                userID = user.userID
+                            .onTapGesture {
+                                withAnimation {
+                                    userID = user.userID
+                                }
                             }
                         }
+                    }
                 }
             }
             .navigationTitle("User")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("", systemImage: "plus") {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
                         showSheetOnbording = true
-                    }
-                    .sheet(isPresented: $showSheetOnbording) {
-                        OnboardingView()
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .tint(.green)
                     }
                 }
             }
-            
+            .sheet(isPresented: $showSheetOnbording) {
+                AddUserSheet()
+            }
         }
     }
 }

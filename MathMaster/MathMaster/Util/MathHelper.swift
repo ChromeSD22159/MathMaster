@@ -16,9 +16,9 @@ struct MathHelper {
     @AppStorage(AppStorageKey.divisionToggle.rawValue) private static var divisionToggle = false
   static func generateRandomMath() -> MathQuestion {
     var maxResult: Int = 20
-    var selectedDifficulty: Schwierigkeitsgrad {
+    var selectedDifficulty: LevelOfDifficulty {
       get {
-        return Schwierigkeitsgrad(rawValue: selectedDifficultyString) ?? .easy
+        return LevelOfDifficulty(rawValue: selectedDifficultyString) ?? .easy
       }
       set {
         selectedDifficultyString = newValue.rawValue
@@ -30,7 +30,6 @@ struct MathHelper {
       case .hard: maxResult = 100
     }
     var operations: [MathOperation] = []
-    //let operation = MathOperation.allCases.randomElement()!
     if additionToggle {
       operations.append(MathOperation.addition)
     }
@@ -58,7 +57,6 @@ struct MathHelper {
         case .multiplication: result = number1 * number2
         case .division:
           if number2 != 0 {
-            //result = number1
             result = number1 * number2
           } else {
             result = maxResult + 1

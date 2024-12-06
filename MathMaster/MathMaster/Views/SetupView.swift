@@ -24,7 +24,7 @@ struct SetupView: View {
           .font(.headline)
           .bold()
         Picker("Schwierigkeitsgrad", selection: $selectedDifficultyString) {
-          ForEach(Schwierigkeitsgrad.allCases) { gameType in
+          ForEach(LevelOfDifficulty.allCases) { gameType in
             Text(gameType.rawValue).tag(gameType.rawValue)
           }
         }

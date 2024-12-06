@@ -19,9 +19,10 @@ struct GameView: View {
     
     /// GameLength from Settings
     @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var schwierigkeitsgrad = ""
     
-    /// TImer States
-    @State var remeiningTime: Int = 0
+    /// Timer States
+    @State var remainingTime: Int = 0
     @State var timerJob: Timer?
     @State var saved = false
     
@@ -38,7 +39,7 @@ struct GameView: View {
     
     /// Switch RemainingTime Color By Left Time
     var timerColor: Color {
-        remeiningTime < 10 ? .red : timerJob == nil ? .gray : .green
+        remainingTime < 10 ? .red : timerJob == nil ? .gray : .green
     }
     
     var body: some View {
@@ -53,7 +54,7 @@ struct GameView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     HStack {
-                        Label("\(remeiningTime)", systemImage: "timer")
+                        Label("\(remainingTime)", systemImage: "timer")
                             .foregroundStyle(timerColor)
                             .onTapGesture {
                                 if timerJob == nil {
@@ -137,10 +138,10 @@ struct GameView: View {
     }
     
     private func startTimer() {
-        remeiningTime = gameDuration
+        remainingTime = gameDuration
         timerJob = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if remeiningTime > 0 {
-                remeiningTime -= 1
+            if remainingTime > 0 {
+                remainingTime -= 1
             } else {
                 gameFinished()
             }
@@ -154,8 +155,8 @@ struct GameView: View {
     
     private func restartTimer() {
         timerJob = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if remeiningTime > 0 {
-                remeiningTime -= 1
+            if remainingTime > 0 {
+                remainingTime -= 1
             } else {
                 pauseTimer()
                 gameFinished()
@@ -176,7 +177,7 @@ struct GameView: View {
     private func gameFinished() {
         guard saved == false else {return}
         if let user = user {
-            let gameResult = Statistic(gameType: "", date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
+            let gameResult = Statistic(gameType: schwierigkeitsgrad, date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
             
             user.games.append(gameResult)
             

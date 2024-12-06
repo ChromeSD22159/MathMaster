@@ -15,7 +15,7 @@ struct HomeView: View {
         ZStack(alignment: .top) {
             // MARK: - Background
             VStack {
-                Image("headerHome")
+                Image("headerGreen")
                     .resizable()
                     .scaledToFill()
                     .frame(height: 161)
@@ -31,11 +31,10 @@ struct HomeView: View {
                         .font(.title)
                         .bold()
                         .padding(.horizontal, 30)
-                   
-                    //Start
-                    ForEach(0..<5, id: \.self) { index in
-                        Card(user: user)
-                    }
+                    
+                    
+                    Card(user: user)
+                    
                 }
             }
             .contentMargins([.top], 75)
@@ -74,7 +73,7 @@ struct HomeView: View {
                 }
                 .foregroundStyle(.white)
                 .cardStyle(color: theme.calculatorSymbolBackgroundColor)
-            }//Ende
+            }
         }
     }
 }

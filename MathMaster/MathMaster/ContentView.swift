@@ -21,7 +21,7 @@ struct ContentView: View {
         TabView {
             Tab("Game", systemImage: "gamecontroller") {
                 NavigationStack {
-                    HomeView(user: user) 
+                    HomeView(user: user)
                 }
             }
             Tab("Stats", systemImage: "list.clipboard.fill") {
