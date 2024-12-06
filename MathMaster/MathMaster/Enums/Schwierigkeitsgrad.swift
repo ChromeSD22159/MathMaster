@@ -11,4 +11,8 @@ enum Schwierigkeitsgrad: String, CaseIterable, Identifiable {
     case hard = "Schwer"
     
     var id: String { self.rawValue }
+    
+    static func from(string: String) -> Schwierigkeitsgrad? {
+        return Schwierigkeitsgrad(rawValue: string)
+    }
 }

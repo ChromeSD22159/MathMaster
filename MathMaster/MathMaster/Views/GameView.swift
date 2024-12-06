@@ -19,6 +19,7 @@ struct GameView: View {
     /// TImer States
     @State var remeiningTime: Int = 0
     @State var timerJob: Timer?
+    @State var saved = false
     
     /// Game States
     @State var math: Math?
@@ -99,6 +100,12 @@ struct GameView: View {
             startTimer()
             math = MathHelper.generateRandomMath()
         }
+        .onDisappear{
+            pauseTimer()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                 dismiss()
+            }
+        }
         .alert(isPresented: $showingResultAlert) {
             Alert(
                 title: Text("Spiel zuende!"),
@@ -136,6 +143,7 @@ struct GameView: View {
             if remeiningTime > 0 {
                 remeiningTime -= 1
             } else {
+                pauseTimer()
                 gameFinished()
             }
         }
@@ -143,17 +151,16 @@ struct GameView: View {
     
     private func checkAnswer(result: Int) {
         if math?.result == result {
-            print("Richtig!")
             rightAnswer += 1
             points += 10
         } else {
-            print("Falsch!")
             wrongAnswer += 1
             points -= 10
         }
     }
     
     private func gameFinished() {
+        guard saved == false else {return}
         if let user = user {
             let gameResult = Statistic(gameType: "", date: Date(), points: points, rightAnswers: rightAnswer, wrongAnswers: wrongAnswer)
             
@@ -161,8 +168,9 @@ struct GameView: View {
             //modelContext.insert(gameResult)
             
             showingResultAlert = true
-             
+            saved = true
             // TODO: FIND #Ranking in POINT DB
+            
         }
     }
     
@@ -173,6 +181,7 @@ struct GameView: View {
         points = 0
         startTimer()
         math = MathHelper.generateRandomMath()
+        saved = false
     }
     
     private func navigateHome() {
