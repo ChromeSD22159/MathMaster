@@ -15,7 +15,7 @@ struct OnboardingView: View {
     @State private var username: String = ""
     @State private var age: String = ""
     
-    @AppStorage("user") private var userID: String = ""
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
     
     var body: some View {
         VStack {
@@ -35,16 +35,11 @@ struct OnboardingView: View {
                     dismiss()
                 } else {
                     print("Bitte gültiger Alter eingeben!")
-                }
-                
-                
+                } 
             } label: {
                 Text("User speichern")
             }
-
         }
-
-        
     }
 }
 

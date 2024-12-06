@@ -1,21 +1,27 @@
 //
-// ContentView.swift
-// MathMaster
+//  ContentView.swift
+//  MathMaster
 //
-// Created by Leonid Riedel on 02.12.24.
+//  Created by Leonid Riedel on 02.12.24.
 //
+
 import SwiftUI
 import SwiftData
+
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
+    
     @Query var users: [User]
+    
     @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
+    
     @State var user: User? = nil
+    
     var body: some View {
         TabView {
             Tab("Game", systemImage: "gamecontroller") {
                 NavigationStack {
-                    HomeView(user: user)
+                    HomeView(user: user) 
                 }
             }
             Tab("Stats", systemImage: "list.clipboard.fill") {
@@ -33,12 +39,14 @@ struct ContentView: View {
         }
         .onChange(of: userID) {
             let user = users.first(where: { $0.userID == userID })
+            
             if let foundUser = user {
                 userID = foundUser.userID
                 self.user = foundUser
             }
         }
     }
+    
     private func insertOrSetUser() {
         if users.count == 0 {
             let user = User(name: "TestUser", age: 24)
@@ -47,6 +55,7 @@ struct ContentView: View {
             self.user = user
         } else {
             let user = users.first(where: { $0.userID == userID })
+            
             if let foundUser = user {
                 userID = foundUser.userID
                 self.user = foundUser
@@ -54,6 +63,8 @@ struct ContentView: View {
         }
     }
 }
+
+
 #Preview {
     ContentView()
         .modelContainer(previewContainer)

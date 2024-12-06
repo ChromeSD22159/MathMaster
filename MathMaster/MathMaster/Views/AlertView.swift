@@ -16,17 +16,17 @@ struct AlertView: View {
         ZStack {
             Color.black.opacity(0.3)
                 .ignoresSafeArea()
-            
+
             VStack(spacing: 20) {
                 Text("Toll gemacht!")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.mint)
-                
+
                 Text("Deine Punkte: \(points)")
                     .font(.headline)
-                
-                
+                   
+
                 HStack {
                     Button(action: home) {
                         Text("Home")
@@ -35,7 +35,7 @@ struct AlertView: View {
                             .foregroundColor(.black)
                             .cornerRadius(10)
                     }
-                    
+
                     Button(action: newGame) {
                         Text("Neues Spiel")
                             .padding()

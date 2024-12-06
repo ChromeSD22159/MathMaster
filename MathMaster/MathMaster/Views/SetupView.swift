@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct SetupView: View {
-  @AppStorage("user") private var userID: String = ""
-  @AppStorage("Schwierigkeitsgrad") private var selectedDifficultyString: String = "Leicht"
-  @AppStorage("gameDuration") private var gameDuration = 60
-  @AppStorage("additionToggle") private var additionToggle = false
-  @AppStorage("subtractionToggle") private var subtractionToggle = false
-  @AppStorage("multiplicationToggle") private var multiplicationToggle = false
-  @AppStorage("divisionToggle") private var divisionToggle = false
-  @State var currentTheme: Theme = .orange
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private var selectedDifficultyString: String = "Leicht"
+    @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
+    @AppStorage(AppStorageKey.additionToggle.rawValue) private var additionToggle = false
+    @AppStorage(AppStorageKey.subtractionToggle.rawValue) private var subtractionToggle = false
+    @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private var multiplicationToggle = false
+    @AppStorage(AppStorageKey.divisionToggle.rawValue) private var divisionToggle = false
+    @State var currentTheme: Theme = .orange
+    
   var body: some View {
     NavigationStack {
       VStack {

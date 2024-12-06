@@ -7,6 +7,10 @@
 import SwiftUI
 import SwiftData
 
+enum AppStorageKey: String {
+    case user, schwierigkeitsgrad, subtractionToggle, additionToggle, multiplicationToggle, divisionToggle, Theme, gameDuration
+}
+
 struct GameView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
@@ -14,7 +18,7 @@ struct GameView: View {
     var user: User?
     
     /// GameLength from Settings
-    @AppStorage("gameDuration") private var gameDuration = 60
+    @AppStorage(AppStorageKey.gameDuration.rawValue) private var gameDuration = 60
     
     /// TImer States
     @State var remeiningTime: Int = 0
@@ -198,4 +202,9 @@ struct GameView: View {
             dismiss()
         }
     }
+}
+
+#Preview {
+    GameView()
+        .modelContainer(previewContainer)
 }
