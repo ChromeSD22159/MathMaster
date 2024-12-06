@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct ThemeService {
-    @AppStorage("Theme") static var theme: String = Theme.mint.rawValue
+    @AppStorage(AppStorageKey.Theme.rawValue) static var theme: String = Theme.mint.rawValue
     
     static func setTheme(_ theme: Theme) {
         ThemeService.theme = theme.rawValue

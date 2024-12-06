@@ -15,6 +15,8 @@ struct OnboardingView: View {
     @State private var username: String = ""
     @State private var age: String = ""
     
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
+    
     var body: some View {
         VStack {
             Text("Hello, \(username) ")
@@ -27,20 +29,17 @@ struct OnboardingView: View {
                 .padding()
             Button {
                 if let ageInt = Int(age) {
-                    context.insert(User(name: username, age: ageInt))
+                    let user = User(name: username, age: ageInt)
+                    context.insert(user)
+                    userID = user.userID
                     dismiss()
                 } else {
                     print("Bitte gültiger Alter eingeben!")
-                }
-                
-                
+                } 
             } label: {
                 Text("User speichern")
             }
-
         }
-
-        
     }
 }
 

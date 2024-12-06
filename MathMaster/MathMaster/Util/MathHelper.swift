@@ -6,14 +6,14 @@
 //
 import Foundation
 import SwiftUI
-
+ 
 /// MathHelper zur Generierung von Rechenaufgaben
 struct MathHelper {
-  @AppStorage("Schwierigkeitsgrad") private static var selectedDifficultyString: String = "Leicht"
-  @AppStorage("additionToggle") private static var additionToggle = false
-  @AppStorage("subtractionToggle") private static var subtractionToggle = false
-  @AppStorage("multiplicationToggle") private static var multiplicationToggle = false
-  @AppStorage("divisionToggle") private static var divisionToggle = false
+    @AppStorage(AppStorageKey.schwierigkeitsgrad.rawValue) private static var selectedDifficultyString: String = "Leicht"
+    @AppStorage(AppStorageKey.additionToggle.rawValue) private static var additionToggle = false
+    @AppStorage(AppStorageKey.subtractionToggle.rawValue) private static var subtractionToggle = false
+    @AppStorage(AppStorageKey.multiplicationToggle.rawValue) private static var multiplicationToggle = false
+    @AppStorage(AppStorageKey.divisionToggle.rawValue) private static var divisionToggle = false
   static func generateRandomMath() -> Math {
     var maxResult: Int = 20
     var selectedDifficulty: Schwierigkeitsgrad {

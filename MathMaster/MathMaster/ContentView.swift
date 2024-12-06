@@ -13,7 +13,8 @@ struct ContentView: View {
     
     @Query var users: [User]
     
-    @AppStorage("user") private var userID: String = ""
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
+    
     @State var user: User? = nil
     
     var body: some View {
@@ -36,6 +37,14 @@ struct ContentView: View {
         .onAppear {
             insertOrSetUser()
         }
+        .onChange(of: userID) {
+            let user = users.first(where: { $0.userID == userID })
+            
+            if let foundUser = user {
+                userID = foundUser.userID
+                self.user = foundUser
+            }
+        }
     }
     
     private func insertOrSetUser() {
@@ -45,9 +54,12 @@ struct ContentView: View {
             userID = user.userID
             self.user = user
         } else {
-            let user = users.first!
-            userID = user.userID
-            self.user = user
+            let user = users.first(where: { $0.userID == userID })
+            
+            if let foundUser = user {
+                userID = foundUser.userID
+                self.user = foundUser
+            }
         }
     }
 }

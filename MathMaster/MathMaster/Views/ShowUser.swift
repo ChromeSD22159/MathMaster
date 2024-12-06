@@ -7,11 +7,13 @@
 
 import SwiftUI
 import SwiftData
-
+ 
 struct ShowUser: View {
     @Environment(\.modelContext) var context
     
     @Query(sort: \User.age, order: .reverse) var user: [User]
+    
+    @AppStorage(AppStorageKey.user.rawValue) private var userID: String = ""
     
     @State private var showSheetOnbording = false
     
@@ -21,10 +23,19 @@ struct ShowUser: View {
                 ForEach(user) { user in
                         HStack {
                             Text("\(user.name)")
+                            
+                            if user.userID == userID {
+                                Image(systemName: "star.fill")
+                            }
+                            
                             Spacer()
                             Text("\(user.age) Jahre alt")
                         }
-                    
+                        .onTapGesture {
+                            withAnimation {
+                                userID = user.userID
+                            }
+                        }
                 }
             }
             .navigationTitle("User")
@@ -41,4 +52,9 @@ struct ShowUser: View {
             
         }
     }
+}
+
+#Preview {
+    ShowUser()
+        .modelContainer(previewContainer)
 }
