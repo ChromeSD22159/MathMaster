@@ -35,28 +35,44 @@ struct StatsView: View {
                 
                 
             } label: {
-                Text("Alle Daten löschen")
+                Spacer()
+                Image(systemName: "trash")
+                    .tint(.red)
+                    .padding(.trailing, 24)
+                    
             }
             
             
-            Text("Stats für \(user.first?.name ?? "")")
+            Text("Statistik für \(user.first?.name ?? "")")
                 .font(.title2)
+                .bold()
+            
             ForEach(user) { user in
                 VStack {
-                    Text(user.name)
-                    Text("Alter: \(user.age)")
                     Divider()
                     
                     List{
                         ForEach(user.games.sorted { $0.date > $1.date}) { game in
-                            HStack{
-                                Text(game.gameType)
-                                Text(game.date.formatted(date: .numeric, time: .omitted))
-                                Text("Punkte: \(game.points)")
-                                Text("Richtige: \(game.rightAnswers)")
-                                Text("Falsch: \(game.wrongAnswers)")
+                            VStack{
+                                HStack{
+                                    Text(game.gameType)
+                                    Spacer()
+                                    Text(game.date.formatted(date: .numeric, time: .omitted))
+                                    
+                                }
+                                HStack{
+                                    Image(systemName: "checkmark.seal")
+                                        .foregroundStyle(.green)
+                                    Text("\(game.rightAnswers)")
+                                    Spacer()
+                                    Image(systemName: "xmark.seal")
+                                        .foregroundStyle(.red)
+                                    Text("\(game.wrongAnswers)")
+                                    Spacer()
+                                    Text("Punkte: \(game.points)")
+                                }
                             }
-                            .font(.system(size: 12))
+                            .font(.system(size: 16))
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive, action: {
                                     deleteStats(game: game)

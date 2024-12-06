@@ -42,14 +42,15 @@ struct GameView: View {
     }
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            ZStack(alignment: .leading){
-                /// Hintergrund
-                Image("backgroundGame")
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                
+        
+        ZStack(alignment: .leading){
+            /// Hintergrund
+            Image("backgroundGame")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack {
                     HStack {
                         Label("\(remeiningTime)", systemImage: "timer")
@@ -69,12 +70,12 @@ struct GameView: View {
                             Label("\(wrongAnswer)", systemImage: "xmark.seal.fill").foregroundStyle(.red)
                         }
                     }
-                  
+                    
                     .padding(32)
                     
                     
                     VStack {
-                      
+                        
                         
                         HStack {
                             Spacer()
@@ -99,9 +100,10 @@ struct GameView: View {
                         checkAnswer(result: result)
                         math = MathHelper.generateRandomMath()
                     }
-                  
+                    
                 }
             }
+            .padding(.top, 40)
             if showingResultAlert {
                 AlertView(points: points, home: navigateHome, newGame: restartGame)
             }
@@ -131,7 +133,7 @@ struct GameView: View {
                 }
             }
         )
-   
+        
     }
     
     private func startTimer() {
