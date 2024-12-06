@@ -24,7 +24,7 @@ struct HomeView: View {
             // MARK: - ViewContent
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 20){
-                    Text("\(user?.name ?? "User"), was möchtest\ndu heute spielen?")
+                    Text("\(user?.name ?? "UserName"), was möchtest\ndu heute spielen?")
                         .font(.title)
                         .bold()
                         .padding(.horizontal, 30)
